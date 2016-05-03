@@ -1,7 +1,7 @@
 {
   "name": "@rill/fetcher",
   "description": "Isomoprhic fetch api utility for Rill.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Dylan Piercey <pierceydylan@gmail.com>",
   "browser": {
     "agentkeepalive": "./noop"
@@ -53,7 +53,8 @@
       "after",
       "afterEach",
       "fetch",
-      "FormData"
+      "FormData",
+      "Headers"
     ]
   }
 }

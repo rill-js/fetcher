@@ -42,7 +42,7 @@ module.exports = function fetcherMiddleware (config) {
       // Fetch defaults
       path = path || '/'
       opts = opts || {}
-      opts.headers = opts.headers || {}
+      opts.headers = toHeaders(opts.headers)
 
       // Allow event handlers to modify request options.
       request.emit('request', path, opts)
@@ -80,6 +80,16 @@ module.exports = function fetcherMiddleware (config) {
       })
     }
   }
+}
+
+/**
+ * Turns an object into request headers.
+ */
+function toHeaders (obj) {
+  var headers = new Headers()
+  if (typeof obj !== 'object') return headers
+  for (var key in obj) headers.set(key, obj[key])
+  return headers
 }
 
 /**
