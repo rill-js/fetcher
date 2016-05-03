@@ -75,7 +75,7 @@ module.exports = function fetcherMiddleware (config) {
       // Call native fetch.
       return fetch(path, opts).then(function (res) {
         // Allow event handlers to respond to a response.
-        request.emit('response', res)
+        request.emit('response', path, res)
         return res
       })
     }

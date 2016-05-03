@@ -28,14 +28,14 @@ app.use(function ({ api }, next) {
 	// Listeners are cleaned up on every request.
 
 	// Example request intercept.
-	api.on("request", (options)=> {
-		// Options are the options provided to the fetch request.
+	api.on("request", (url, req)=> {
+		// req is the options provided to the fetch request.
 		options.headers.auth = "...";
 	});
 
 	// Example response intercept.
-	api.on("response", (res)=> {
-		// Res is the response from a fetch request.
+	api.on("response", (url, res)=> {
+		// res is the response from a fetch request.
 		console.log(res.headers.get("x-error-message"));
 	})
 
