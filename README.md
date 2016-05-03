@@ -34,7 +34,7 @@ app.use(function ({ api }, next) {
 	});
 
 	// Example response intercept.
-	app.on("response", (res)=> {
+	api.on("response", (res)=> {
 		// Res is the response from a fetch request.
 		console.log(res.headers.get("x-error-message"));
 	})
