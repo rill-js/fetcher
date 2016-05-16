@@ -103,7 +103,7 @@ function cast (data) {
   for (var key in data) {
     var val = data[key]
     if (val === '' || val === undefined) continue
-    else if (val instanceof Date) result[key] = val.toISOString()
+    else if (val instanceof Date && isFinite(val)) result[key] = val.toISOString()
     else result[key] = String(val)
   }
 
