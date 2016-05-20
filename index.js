@@ -56,14 +56,20 @@ module.exports = function fetcherMiddleware (config) {
       if (typeof opts.body === 'object') {
         form = form || new FormData()
         var body = cast(qFlat(opts.body))
-        for (key in body) form.append(key, body[key])
+        for (key in body) {
+          if (body[key] === undefined) continue
+          form.append(key, body[key])
+        }
       }
 
       // Append file data.
       if (typeof opts.files === 'object') {
         form = form || new FormData()
         var files = qFlat(opts.files)
-        for (key in files) form.append(key, files[key])
+        for (key in files) {
+          if (files[key] === undefined) continue
+          form.append(key, files[key])
+        }
       }
 
       // Attach form if created.
