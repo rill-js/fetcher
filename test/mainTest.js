@@ -41,8 +41,7 @@ describe('Rill/Fetcher', function () {
     var request = agent(Rill()
       .use(fetcher({
         name: 'google',
-        base: 'https://google.ca',
-        keepAlive: false
+        base: 'https://google.ca'
       }))
       .get('/', respond(200, function (ctx) {
         // Call api from root.

@@ -8,14 +8,16 @@ var URL = require('url')
 var QS = require('querystring')
 var qFlat = require('q-flat')
 var EventEmitter = require('events').EventEmitter
-var keepalive = require('agentkeepalive')()
+var HttpAgent = require('agentkeepalive')
+var HttpsAgent = HttpAgent.HttpsAgent
+var keepalive = { http: new HttpAgent(), https: new HttpsAgent() }
 
 module.exports = function fetcherMiddleware (config) {
   // Middleware defaults.
   config = config || {}
   config.name = config.name || 'fetch'
   config.base = config.base || '/'
-  config.agent = 'agent' in config ? config.agent : config.keepAlive && keepalive
+  config.agent = 'agent' in config ? config.agent : keepalive
 
   return function (ctx, next) {
     // Attach fetch utility to context.
@@ -75,8 +77,13 @@ module.exports = function fetcherMiddleware (config) {
       // Attach form if created.
       if (form) opts.body = form
 
-      // Default to keepalive agent for perf.
-      if (config.agent && !opts.agent) opts.agent = keepalive
+      // Setup default agent for node-fetch.
+      if (!opts.agent && config.agent) {
+        // Default to config agent / keepalive with the ability to set a custom
+        // agent for http and https.
+        var protocol = (URL.parse(path).protocol || 'http:').slice(0, -1)
+        opts.agent = config.agent[protocol]
+      }
 
       // Call native fetch.
       return fetch(path, opts).then(function (res) {
