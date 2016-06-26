@@ -49,7 +49,7 @@ app.use(async ({ api }, next)=> {
 	});
 
 	// Parse api response as json (same as native fetch).
-	const data = await res.json();
+	const data = await response.json();
 });
 ```
 
