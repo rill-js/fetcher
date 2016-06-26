@@ -30,7 +30,7 @@ app.use(async ({ api }, next)=> {
 	// Example request intercept.
 	api.on("request", (url, req)=> {
 		// req is the options provided to the fetch request.
-		options.headers.auth = "...";
+		req.headers.auth = "...";
 	});
 
 	// Example response intercept.
