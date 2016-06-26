@@ -15,7 +15,7 @@ module.exports = function fetcherMiddleware (config) {
   config = config || {}
   config.name = config.name || 'fetch'
   config.base = config.base || '/'
-  config.agent = config.agent || keepalive
+  config.agent = 'agent' in config ? config.agent : config.keepAlive && keepalive
 
   return function (ctx, next) {
     // Attach fetch utility to context.

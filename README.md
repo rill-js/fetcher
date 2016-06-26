@@ -56,6 +56,7 @@ app.use(function ({ api }, next) {
 {
 	name: "api", // Optional path to set the fetcher on the context (default "fetch").
 	base: "/api/", // Sets the base path for the fetcher.
+	keepAlive: false, // Set this to true to use a keep-alive agent in node js (makes local requests much faster).
 	agent: ... // Optionally specify a custom http agent (nodejs only).
 }
 ```
