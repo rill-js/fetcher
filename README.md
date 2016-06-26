@@ -23,7 +23,7 @@ app.use(fetcher({
 	base: "/api/"
 }));
 
-app.use(function ({ api }, next) {
+app.use(async ({ api }, next)=> {
 	// Fetcher is an event emitter so you can intercept requests and responses.
 	// Listeners are cleaned up on every request.
 
@@ -40,13 +40,16 @@ app.use(function ({ api }, next) {
 	})
 
 	// Example fetch. (Options similar to natvie fetch).
-	return api("user", {
+	const response = await api("user", {
 		method: "GET", // Set method (GET is default).
 		query: { a: 1 }, // Append a query string.
 		body: { b: 2 }, // Set the request body.
 		files: { c: ... }, // Set a FormData file (gets added to the formdata body).
 		headers: { "x-custom-header": 1 } // Set some headers.
 	});
+
+	// Parse api response as json (same as native fetch).
+	const data = await res.json();
 });
 ```
 
