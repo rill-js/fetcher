@@ -83,7 +83,7 @@ app.use(async ({ api }, next)=> {
 if (!process.browser) {
   // Handle the `user` api only in the server.
   app.get('/api/user', ({ req, res })=> {
-    // Check out https://github.com/rill-js/local-forwarded-for to ensure consistent `ctx.req.ip` across api calls.
+    // Check out https://github.com/rill-js/forwarded-from to ensure consistent `ctx.req.ip` across api calls.
     res.body = { user: 'data' }
   })
 }
