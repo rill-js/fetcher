@@ -9,6 +9,7 @@ var QS = require('querystring')
 var qFlat = require('q-flat')
 var EventEmitter = require('events').EventEmitter
 var HttpAgent = require('agentkeepalive')
+var isLocal = require('is-local-ip')
 var HttpsAgent = HttpAgent.HttpsAgent
 var keepalive = { http: new HttpAgent(), https: new HttpsAgent() }
 
@@ -18,6 +19,7 @@ module.exports = function fetcherMiddleware (config) {
   config.name = config.name || 'fetch'
   config.base = config.base || '/'
   config.agent = 'agent' in config ? config.agent : keepalive
+  config.forwardIP = 'forwardIP' in config ? config.forwardIP : true
 
   return function (ctx, next) {
     // Attach fetch utility to context.
@@ -25,6 +27,14 @@ module.exports = function fetcherMiddleware (config) {
 
     // Ensure base path starts with http(s) for node-fetch.
     var base = URL.resolve(ctx.req.origin, config.base)
+
+    if (config.forwardIP) {
+      // Update ip address if this was a locally forwarded request.
+      var forwaredFor = ctx.req.get('X-Forwarded-For')
+      if (forwaredFor && isLocal(ctx.req.ip)) {
+        ctx.req.ip = forwaredFor
+      }
+    }
 
     // Create an event emitter for the request.
     var emitter = new EventEmitter()
@@ -45,6 +55,11 @@ module.exports = function fetcherMiddleware (config) {
       path = path || '/'
       opts = opts || {}
       opts.headers = toHeaders(opts.headers)
+
+      // Forward current ip address with request.
+      if (opts.forwardIP && !opts.headers.get('X-Forwarded-For')) {
+        opts.headers.set('X-Forwarded-For', ctx.req.ip)
+      }
 
       // Allow event handlers to modify request options.
       request.emit('request', path, opts)

@@ -11,7 +11,8 @@ describe('Rill/Fetcher', function () {
       .use(fetcher({
         name: 'api',
         base: '/api/',
-        keepAlive: true
+        keepAlive: true,
+        forwardIP: true
       }))
       .get('/api/test', respond(200, function (ctx) {
         ctx.res.body = { success: true }
