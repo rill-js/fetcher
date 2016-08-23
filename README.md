@@ -29,8 +29,6 @@
 
 <div align="center">
   Fetch wrapper for Rill that allows intercepting requests and automatic FormData casting.
-
-  Check out [@rill/local-forwarded-for](https://gitter.im/rill-js/local-forwarded-for) to ensure consistent `ctx.req.ip` across api calls.
 </div>
 
 # Installation
@@ -80,6 +78,15 @@ app.use(async ({ api }, next)=> {
 	// Parse api response as json (same as native fetch).
 	const data = await response.json()
 })
+
+// Using https://github.com/DylanPiercey/isbrowser.
+if (!process.browser) {
+  // Handle the `user` api only in the server.
+  app.get('/api/user', ({ req, res })=> {
+    // Check out https://github.com/rill-js/local-forwarded-for] to ensure consistent `ctx.req.ip` across api calls.
+    res.body = { user: 'data' }
+  })
+}
 ```
 
 # Options
