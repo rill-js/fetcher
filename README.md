@@ -29,6 +29,8 @@
 
 <div align="center">
   Fetch wrapper for Rill that allows intercepting requests and automatic FormData casting.
+
+  Check out [@rill/local-forwarded-for](https://gitter.im/rill-js/local-forwarded-for) to ensure consistent `ctx.req.ip` across api calls.
 </div>
 
 # Installation
@@ -86,7 +88,7 @@ app.use(async ({ api }, next)=> {
 {
 	name: 'api', // Optional path to set the fetcher on the context (default 'fetch').
 	base: '/api/', // Sets the base path for the fetcher.
-	forwardIP: true, // Set this to false to disable ip forwarding on internal requests.
+	forwardIP: true, // Set this to false to disable setting 'X-Forwarded-For' header automatically.
 	agent: {
 		// Optionally specify a custom http(s) agent (nodejs only).
 		// Both default to 'agentkeepalive' for optimum performance for local requests.
