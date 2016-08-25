@@ -1,4 +1,4 @@
-## Directory-based project format
+# Sublime
 *.sublime*
 
 # OSX
@@ -6,6 +6,4 @@
 
 # NPM
 node_modules
-
-# Compiled JS
-bin
+npm-debug.log

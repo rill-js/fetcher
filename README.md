@@ -33,7 +33,6 @@
 
 # Installation
 
-#### Npm
 ```console
 npm install @rill/fetcher
 ```
