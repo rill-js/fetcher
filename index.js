@@ -58,7 +58,7 @@ module.exports = function fetcherMiddleware (config) {
         var cookie = ctx.req.get('Cookie')
         if (cookie) {
           opts.credentials = 'same-origin'
-          opts.headers.set('Cookie', ctx.req.get('Cookie'))
+          opts.headers.set('Cookie', cookie)
         }
       }
 
