@@ -55,7 +55,7 @@ module.exports = function fetcherMiddleware (config) {
 
       // Automatically send credentials if `withCredentials` is enabled.
       if (config.withCredentials && !opts.credentials) {
-        var cookie = ctx.req.get('cookie')
+        var cookie = ctx.req.get('Cookie')
         if (cookie) {
           opts.credentials = 'same-origin'
           opts.headers.set('Cookie', ctx.req.get('Cookie'))
