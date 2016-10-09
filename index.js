@@ -19,6 +19,7 @@ module.exports = function fetcherMiddleware (config) {
   config.base = config.base || '/'
   config.agent = 'agent' in config ? config.agent : keepalive
   config.forwardIP = 'forwardIP' in config ? config.forwardIP : true
+  config.withCredentials = 'withCredentials' in config ? config.withCredentials : true
 
   return function (ctx, next) {
     // Attach fetch utility to context.
@@ -50,6 +51,12 @@ module.exports = function fetcherMiddleware (config) {
       // Forward current ip address with request.
       if (opts.forwardIP && !opts.headers.get('X-Forwarded-For')) {
         opts.headers.set('X-Forwarded-For', ctx.req.ip)
+      }
+
+      // Automatically send credentials if `withCredentials` is enabled.
+      if (opts.withCredentials && !opts.credentials) {
+        opts.credentials = 'same-origin'
+        opts.headers.set('Cookie', ctx.req.get('cookie'))
       }
 
       // Allow event handlers to modify request options.
