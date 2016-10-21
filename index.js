@@ -49,7 +49,7 @@ module.exports = function fetcherMiddleware (config) {
       opts.headers = toHeaders(opts.headers)
 
       // Forward current ip address with request if we are server side.
-      if (!process.browser && opts.forwardIP && !opts.headers.get('X-Forwarded-For')) {
+      if (!process.browser && config.forwardIP && !opts.headers.get('X-Forwarded-For')) {
         opts.headers.set('X-Forwarded-For', ctx.req.ip)
       }
 
