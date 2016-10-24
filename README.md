@@ -95,7 +95,7 @@ if (!process.browser) {
 	name: 'fetch', // Optional path to set the fetcher on the context (default 'fetch').
 	base: '/', // Sets the base path for the fetcher.
 	forwardIP: true, // Set this to false to disable setting 'X-Forwarded-For' header automatically.
-  withCredentials: true, // Set this to false to disable sending cookies. (Uses same-origin).
+	withCredentials: true, // Set this to false to disable sending cookies. (Uses same-origin).
 	agent: {
 		// Optionally specify a custom http(s) agent (nodejs only).
 		// Both default to 'agentkeepalive' for optimum performance for local requests.
