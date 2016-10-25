@@ -38,8 +38,15 @@ module.exports = function fetcherMiddleware (config) {
     }
 
     // Run middleware then cleanup emitter.
-    return next().then(request.removeAllListeners)
+    return next().then(cleanup, cleanup)
 
+    // Removes any registered event listeners and throws a provided error.
+    function cleanup (err) {
+      request.removeAllListeners()
+      if (err) throw err
+    }
+
+    // Wrapper arround native fetch.
     function request (path, opts) {
       var form = null
       var key
