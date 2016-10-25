@@ -19,6 +19,7 @@ module.exports = function fetcherMiddleware (config) {
   config.base = config.base || '/'
   config.agent = 'agent' in config ? config.agent : keepalive
   config.forwardIP = 'forwardIP' in config ? config.forwardIP : true
+  config.forwardHost = 'forwardHost' in config ? config.forwardHost : true
   config.withCredentials = 'withCredentials' in config ? config.withCredentials : true
 
   return function (ctx, next) {
@@ -48,9 +49,17 @@ module.exports = function fetcherMiddleware (config) {
       opts = opts || {}
       opts.headers = toHeaders(opts.headers)
 
-      // Forward current ip address with request if we are server side.
-      if (!process.browser && config.forwardIP && !opts.headers.get('X-Forwarded-For')) {
-        opts.headers.set('X-Forwarded-For', ctx.req.ip)
+      // Forward some proxy headers if we are server side.
+      if (!process.browser) {
+        // Forward current ip address.
+        if (config.forwardIP && !opts.headers.get('X-Forwarded-For')) {
+          opts.headers.set('X-Forwarded-For', ctx.req.ip)
+        }
+
+        // Forward current host with request.
+        if (config.forwardHost && !opts.headers.get('X-Forwarded-Host')) {
+          opts.headers.set('X-Forwarded-Host', ctx.req.host)
+        }
       }
 
       // Automatically send credentials if `withCredentials` is enabled.
