@@ -19,7 +19,7 @@ describe('Rill/Fetcher', function () {
       }))
       .get('/', respond(200, function (ctx) {
         // Call api from root.
-        return ctx.api('test')
+        return ctx.api('test', { query: { a: 1 } })
           .then(function (res) { return res.json() })
           .then(function (data) { ctx.res.body = data })
       }))

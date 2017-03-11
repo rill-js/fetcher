@@ -4,10 +4,10 @@
 require('isomorphic-fetch')
 require('isomorphic-form-data')
 
-var URL = require('url')
-var QS = require('querystring')
+var URL = require('mini-url')
+var QS = require('mini-querystring')
 var qFlat = require('q-flat')
-var EventEmitter = require('events').EventEmitter
+var EventEmitter = require('events-light')
 var HttpAgent = require('agentkeepalive')
 var HttpsAgent = HttpAgent.HttpsAgent
 var keepalive = { http: new HttpAgent(), https: new HttpsAgent() }
@@ -27,7 +27,7 @@ module.exports = function fetcherMiddleware (config) {
     ctx[config.name] = request
 
     // Ensure base path starts with http(s) for node-fetch.
-    var base = URL.resolve(ctx.req.origin, config.base)
+    var base = URL.parse(config.base, ctx.req.origin).href
 
     // Create an event emitter for the request.
     var emitter = new EventEmitter()
@@ -81,10 +81,20 @@ module.exports = function fetcherMiddleware (config) {
       // Allow event handlers to modify request options.
       request.emit('request', path, opts)
 
-      // Set base url.
-      path = URL.resolve(base, path)
-      // Append query if needed.
-      path = URL.resolve(path, typeof opts.query === 'object' ? '?' + QS.stringify(cast(qFlat(opts.query))) : '')
+      // Set base url and parse path.
+      var parsed = URL.parse(path, base)
+
+      // Append query string.
+      if (typeof opts.query === 'object') {
+        parsed = {
+          protocol: parsed.protocol,
+          host: parsed.host,
+          pathname: parsed.pathname,
+          search: '?' + QS.stringify(cast(qFlat(opts.query)), false),
+          hash: parsed.hash
+        }
+        parsed.href = URL.stringify(parsed)
+      }
 
       // Append body data.
       if (typeof opts.body === 'object') {
@@ -110,17 +120,14 @@ module.exports = function fetcherMiddleware (config) {
       if (form) opts.body = form
 
       // Setup default agent for node-fetch.
-      if (!opts.agent && config.agent) {
-        // Default to config agent / keepalive with the ability to set a custom
-        // agent for http and https.
-        var protocol = (URL.parse(path).protocol || 'http:').slice(0, -1)
-        opts.agent = config.agent[protocol]
-      }
+      // Default to config agent / keepalive with the ability to set a custom
+      // agent for http and https.
+      if (!opts.agent && config.agent) opts.agent = config.agent[parsed.protocol.slice(0, -1)]
 
       // Call native fetch.
-      return fetch(path, opts).then(function (res) {
+      return fetch(parsed.href, opts).then(function (res) {
         // Allow event handlers to respond to a response.
-        request.emit('response', path, res)
+        request.emit('response', parsed.href, res)
         return res
       })
     }
