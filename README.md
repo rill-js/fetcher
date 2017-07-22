@@ -3,7 +3,7 @@
   <img src="https://raw.githubusercontent.com/rill-js/rill/master/Rill-Icon.jpg" alt="Rill"/>
   <br/>
   @rill/fetcher
-	<br/>
+  <br/>
 
   <!-- Stability -->
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
@@ -45,37 +45,37 @@ const app = rill()
 const fetcher = require('@rill/fetcher')
 
 app.use(fetcher({
-	name: 'api',
-	base: '/api/'
+  name: 'api',
+  base: '/api/'
 }))
 
 app.use(async ({ api }, next)=> {
-	// Fetcher is an event emitter so you can intercept requests and responses.
-	// Listeners are cleaned up on every request.
+  // Fetcher is an event emitter so you can intercept requests and responses.
+  // Listeners are cleaned up on every request.
 
-	// Example request intercept.
-	api.on('request', (url, req)=> {
-		// req is the options provided to the fetch request.
-		req.headers.auth = '...'
-	})
+  // Example request intercept.
+  api.on('request', (url, req)=> {
+    // req is the options provided to the fetch request.
+    req.headers.auth = '...'
+  })
 
-	// Example response intercept.
-	api.on('response', (url, res)=> {
-		// res is the response from a fetch request.
-		console.log(res.headers.get('x-error-message'))
-	})
+  // Example response intercept.
+  api.on('response', (url, res)=> {
+    // res is the response from a fetch request.
+    console.log(res.headers.get('x-error-message'))
+  })
 
-	// Example fetch. (Options similar to natvie fetch).
-	const response = await api('user', {
-		method: 'GET', // Set method (GET is default).
-		query: { a: 1 }, // Append a query string.
-		body: { b: 2 }, // Set the request body.
-		files: { c: ... }, // Set a FormData file (gets added to the formdata body).
-		headers: { 'x-custom-header': 1 } // Set some headers.
-	})
+  // Example fetch. (Options similar to natvie fetch).
+  const response = await api('user', {
+    method: 'GET', // Set method (GET is default).
+    query: { a: 1 }, // Append a query string.
+    body: { b: 2 }, // Set the request body.
+    files: { c: ... }, // Set a FormData file (gets added to the formdata body).
+    headers: { 'x-custom-header': 1 } // Set some headers.
+  })
 
-	// Parse api response as json (same as native fetch).
-	const data = await response.json()
+  // Parse api response as json (same as native fetch).
+  const data = await response.json()
 })
 
 // Using https://github.com/DylanPiercey/isbrowser.
@@ -92,18 +92,18 @@ if (!process.browser) {
 
 ```js
 {
-	name: 'fetch', // Optional path to set the fetcher on the context (default 'fetch').
-	base: '/', // Sets the base path for the fetcher.
-	forwardIP: true, // Set this to false to disable setting 'X-Forwarded-For' header
+  name: 'fetch', // Optional path to set the fetcher on the context (default 'fetch').
+  base: '/', // Sets the base path for the fetcher.
+  forwardIP: true, // Set this to false to disable setting 'X-Forwarded-For' header
   forwardHost: true, // Set this to false to disable setting 'X-Forwarded-Host' header automatically.
-	withCredentials: true, // Set this to false to disable sending cookies. (Uses same-origin).
-	agent: {
-		// Optionally specify a custom http(s) agent (nodejs only).
-		// Both default to 'agentkeepalive' for optimum performance for local requests.
-		// Set `agent: false` to disable the keepalive agent.
-		http: ...,
-		https: ...
-	}
+  withCredentials: true, // Set this to false to disable sending cookies. (Uses same-origin).
+  agent: {
+    // Optionally specify a custom http(s) agent (nodejs only).
+    // Both default to 'agentkeepalive' for optimum performance for local requests.
+    // Set `agent: false` to disable the keepalive agent.
+    http: ...,
+    https: ...
+  }
 }
 ```
 

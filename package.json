@@ -5,7 +5,7 @@
   "author": "Dylan Piercey <pierceydylan@gmail.com>",
   "bugs": "https://github.com/rill-js/fetcher/issues",
   "dependencies": {
-    "agentkeepalive": "^3.1.0",
+    "agentkeepalive": "^3.3.0",
     "events-light": "^1.0.5",
     "isomorphic-fetch": "^2.2.1",
     "isomorphic-form-data": "1.0.0",
@@ -13,8 +13,8 @@
     "mini-url": "^1.6.1"
   },
   "devDependencies": {
-    "mocha": "^3.2.0",
-    "rill": "^4.3.3",
+    "mocha": "^3.4.2",
+    "rill": "^4.3.5",
     "snazzy": "^6.0.0",
     "standard": "^9.0.2",
     "supertest": "^3.0.0"
